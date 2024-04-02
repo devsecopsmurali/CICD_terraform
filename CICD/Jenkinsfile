@@ -17,9 +17,14 @@ pipeline {
                 sh 'cd dev_module;terraform init'
             }
         }
+        stage('Terraform refresh') {
+            steps {
+                sh 'cd dev_module;terraform refresh'
+            }
+        }
         stage('Terraform apply') {
             steps {
-                sh "terraform apply --auto-approve"
+                sh "cd dev_module;terraform apply --auto-approve"
             }
         }
     }

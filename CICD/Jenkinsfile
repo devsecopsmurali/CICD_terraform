@@ -17,6 +17,11 @@ pipeline {
                 sh 'cd dev_module;terraform init'
             }
         }
+        stage('echo') {
+            steps {
+                sh echo "hi"
+            }
+        }
         stage('Terraform refresh') {
             steps {
                 sh 'cd dev_module;terraform refresh'

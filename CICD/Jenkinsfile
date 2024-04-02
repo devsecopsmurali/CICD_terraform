@@ -19,7 +19,7 @@ pipeline {
         }
         stage('echo') {
             steps {
-                sh echo "hi"
+                sh 'echo "hi"'
             }
         }
         stage('Terraform refresh') {

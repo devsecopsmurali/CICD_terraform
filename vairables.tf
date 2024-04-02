@@ -14,6 +14,7 @@ variable "tenancy" {
 variable "region" {
   description = "region value"
   type = string
+  default = ""
 }
 
 

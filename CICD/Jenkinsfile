@@ -33,17 +33,17 @@ pipeline {
             }
         } 
          
-        stage('Retrieve IP Address') {
-            steps {
-                script {
-                    def ipAddress = terraformOutput(name: 'ec2_id_test')
-                    // Use the 'ipAddress' variable for subsequent steps
+        // stage('Retrieve IP Address') {
+        //     steps {
+        //         script {
+        //             def ipAddress = terraformOutput(name: 'ec2_id_test')
+        //             // Use the 'ipAddress' variable for subsequent steps
 
-                    // Example usage:
-                    echo "The EC2 instance ID is: $ipAddress"
-                }
-            }
-        }
+        //             // Example usage:
+        //             echo "The EC2 instance ID is: $ipAddress"
+        //         }
+        //     }
+        // }
 
 
         stage('Print Inventory') {

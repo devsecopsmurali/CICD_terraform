@@ -1,6 +1,7 @@
 resource "aws_security_group" "web_sg" {
   name   = "HTTP and SSH"
-  vpc_id = aws_vpc.some_custom_vpc.id
+  vpc_id = aws_vpc.test_env.id
+  
 
   ingress {
     from_port   = 80

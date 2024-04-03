@@ -9,9 +9,7 @@ resource "aws_instance" "web_servers" {
   instance_type = "t2.micro" 
 }
 
-#aws_instance.web_servers[count.index]
 
-# Subnet
 
 
 provider "aws" {

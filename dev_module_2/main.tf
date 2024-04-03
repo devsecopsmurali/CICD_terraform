@@ -1,7 +1,7 @@
 
 resource "aws_instance" "web_servers" {
 # Define the number of VMs
-  count = 2
+  #count = 2
   security_groups             = ["${aws_security_group.web_sg.id}"] 
   associate_public_ip_address = true
   subnet_id = aws_subnet.subnet.id
@@ -9,13 +9,13 @@ resource "aws_instance" "web_servers" {
   instance_type = "t2.micro" 
 }
 output "ec2_id_test" {
-  value = [for instance in aws_instance.web_servers : instance.public_ip]
+  value = "${aws_instance.web_servers.public_ip}"
+  #value = [for instance in aws_instance.web_servers : instance.public_ip]
 }
 #aws_instance.web_servers[count.index]
 
-# output "ec2_id_test" {
-#   value = "${aws_instance.web_servers.id}"
-# }
+# Subnet
+
 
 provider "aws" {
   region     = "us-east-1"

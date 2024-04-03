@@ -31,12 +31,24 @@ pipeline {
             steps {
                 sh "cd dev_module_2;terraform apply --auto-approve"
             }
+        } 
+         
+        stage('Retrieve IP Address') {
+            steps {
+                script {
+                    def ipAddress = terraformOutput(name: 'ec2_id_test')
+                    // Use the 'ipAddress' variable for subsequent steps
+
+                    // Example usage:
+                    echo "The EC2 instance ID is: $ipAddress"
+                }
+            }
         }
+
 
         stage('Print Inventory') {
       steps {
         sh '''
-           def ipAddress = terraformOutput(name: 'ec2_id_test')
           echo $(terraform output -json ec2_id_test) | awk -F'"' '{print $2}' > aws_hosts
           cat aws_hosts
         '''

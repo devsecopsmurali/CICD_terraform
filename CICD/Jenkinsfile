@@ -41,7 +41,7 @@ pipeline {
                     sh 'ls -al'
                 }
                 ansiblePlaybook playbook: '-i ./inventory'
-                ansiblePlaybook playbook: '-i ./inventory ./dev_module_2/config.yml'
+                ansiblePlaybook playbook: './dev_module_2/config.yml'
             }
         }
     }

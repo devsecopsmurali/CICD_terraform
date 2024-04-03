@@ -40,7 +40,7 @@ pipeline {
                     writeFile file: 'inventory', text: vm_ips.collect { "[$it]\n$it ansible_ssh_user=ec2-user ansible_become=true ansible_ssh_private_key_file=~/.ssh/id_rsa" }.join('')
                     sh 'ls -al'
                 }
-                ansiblePlaybook playbook: './dev_module_2/config.yml'
+                ansiblePlaybook playbook: '-i ./inventory ./dev_module_2/config.yml'
             }
         }
     }

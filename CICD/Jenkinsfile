@@ -63,7 +63,8 @@ pipeline {
 
     stage('Run Ansible Playbook') {
     steps {
-        sh "ansible-playbook dev_module_2/config.yml -i ${EC2_INSTANCE_ID}"
+        def inventoryFile = "${EC2_INSTANCE_ID}"
+        sh "ansible-playbook dev_module_2/config.yml -i ${inventoryFile}"
     }
 }
 

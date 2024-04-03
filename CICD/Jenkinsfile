@@ -61,11 +61,17 @@ pipeline {
       }
     }
 
-    stage('Run Ansible') {
-      steps {
-        ansiblePlaybook(inventory: '${env.EC2_INSTANCE_ID}', playbook: 'dev_module_2/config.yml')
-      }
+    stage('Run Ansible Playbook') {
+    steps {
+        sh "ansible-playbook dev_module_2/config.yml -i ${EC2_INSTANCE_ID}"
     }
+}
+
+    // stage('Run Ansible') {
+    //   steps {
+    //     ansiblePlaybook(inventory: '${EC2_INSTANCE_ID}', playbook: 'dev_module_2/config.yml')
+    //   }
+    // }
 
 
         // stage('Retrieve Host IPs') {

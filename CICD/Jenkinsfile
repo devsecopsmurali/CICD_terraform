@@ -35,43 +35,31 @@ pipeline {
         stage('Retrieve Host IPs') {
             steps {
                 script {
-                    def output = sh (script: 'terraform output -json', returnStdout: true).trim()
-                    //def hostIPs = sh(script: 'echo $output | jq -r ".host_ips.value"', returnStdout: true).trim()
-                   def hostIPs = output =~ /"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"/
+                    // Use Terraform output to retrieve host IPs
+                    def output = sh(script: 'terraform output -json', returnStdout: true).trim()
+                    def hostIPs = output =~ /"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"/
                     
                     // Extract IPs from the match groups
                     def ipsList = hostIPs.collect { it[1] }
                     def hostIPsString = ipsList.join(',')
                     
-                    sh 'echo "Host IPs: $hostIPsString >> inventory"'
+                    echo "Host IPs: $hostIPsString"
                     
-                    // Store IPs in a file or environment variable for later use by Ansible
-                   // env.HOST_IPS = hostIPsString
-                    //sh 'ansible-playbook config.yml'
-                    ansiblePlaybook(
-                        playbook: './dev_module_2/config.yml',
-                        inventory: 'inventory'
-                        )
+                    // Write host IPs to a file
+                    writeFile file: 'host_ips.txt', text: hostIPsString
                 }
             }
         }
+        stage('Ansible Configuration') {
+            steps {
+                // Run Ansible playbooks to configure provisioned hosts
+                script {
+                    sh "ansible-playbook playbook.yml --extra-vars '@host_ips.txt'"
+                }
+            }
+        }
+    }
 
-        
-
-        // stage('Configure VMs') {
-        //     steps {
-        //         script {
-        //             def vm_ips = sh(returnStdout: true, script: 'terraform output private_ip').trim().split()
-        //             writeFile file: 'inventory', text: vm_ips.collect { "[$it]\n$it ansible_ssh_user=ec2-user ansible_become=true ansible_ssh_private_key_file=~/.ssh/id_rsa" }.join('')
-        //             sh 'pwd;ls -al'
-        //             sh 'cat inventory'
-        //         }
-        //         ansiblePlaybook(
-        //                 playbook: './dev_module_2/config.yml',
-        //                 inventory: 'inventory'
-        //                 )
-        //     }
-        // }
     }
 
 }

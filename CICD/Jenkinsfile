@@ -43,11 +43,15 @@ pipeline {
                     def ipsList = hostIPs.collect { it[1] }
                     def hostIPsString = ipsList.join(',')
                     
-                    echo "Host IPs: $hostIPsString"
+                    sh 'echo "Host IPs: $hostIPsString >> inventory"'
                     
                     // Store IPs in a file or environment variable for later use by Ansible
-                    env.HOST_IPS = hostIPsString
-                    sh 'ansible-playbook config.yml --extra-vars "host_ips=${env.HOST_IPS}"'
+                   // env.HOST_IPS = hostIPsString
+                    //sh 'ansible-playbook config.yml'
+                    ansiblePlaybook(
+                        playbook: './dev_module_2/config.yml',
+                        inventory: 'inventory'
+                        )
                 }
             }
         }

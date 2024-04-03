@@ -32,21 +32,31 @@ pipeline {
                 sh "cd dev_module_2;terraform apply --auto-approve"
             }
         }
-
-        stage('Configure VMs') {
+        stage('Retrieve Host IPs') {
             steps {
                 script {
-                    def vm_ips = sh(returnStdout: true, script: 'terraform output private_ip').trim().split()
-                    writeFile file: 'inventory', text: vm_ips.collect { "[$it]\n$it ansible_ssh_user=ec2-user ansible_become=true ansible_ssh_private_key_file=~/.ssh/id_rsa" }.join('')
-                    sh 'pwd;ls -al'
-                    sh 'cat inventory'
+                    def output = sh (script: 'terraform output -json', returnStdout: true).trim()
+                    def jsonOutput = readJSON text: output
+                    def hostIPs = jsonOutput.host_ips.value
+                    sh 'echo "$hostIPs" >> inventory'
                 }
-                ansiblePlaybook(
-                        playbook: './dev_module_2/config.yml',
-                        inventory: 'inventory'
-                        )
             }
         }
+
+        // stage('Configure VMs') {
+        //     steps {
+        //         script {
+        //             def vm_ips = sh(returnStdout: true, script: 'terraform output private_ip').trim().split()
+        //             writeFile file: 'inventory', text: vm_ips.collect { "[$it]\n$it ansible_ssh_user=ec2-user ansible_become=true ansible_ssh_private_key_file=~/.ssh/id_rsa" }.join('')
+        //             sh 'pwd;ls -al'
+        //             sh 'cat inventory'
+        //         }
+        //         ansiblePlaybook(
+        //                 playbook: './dev_module_2/config.yml',
+        //                 inventory: 'inventory'
+        //                 )
+        //     }
+        // }
     }
 
 }

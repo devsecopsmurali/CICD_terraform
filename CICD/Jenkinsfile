@@ -32,20 +32,23 @@ pipeline {
                 sh "cd dev_module_2;terraform apply --auto-approve"
             }
         } 
+         
+
          stage('Terraform output') {
-            steps {
-                //sh "cd dev_module_2;terraform output -raw ec2_id_test"
-              def ec2InstanceId
+    steps {
+        script {
+            def ec2InstanceId
             catchError {
                 ec2InstanceId = sh(
                     script: 'cd dev_module_2;terraform output -raw ec2_id_test',
                     returnStdout: true
                 ).trim()
             }
-                
-                echo "The EC2 instance ID is: ${ec2InstanceId}"
-            }
+            echo "The EC2 instance ID is: ${ec2InstanceId}"
+            // Use the 'ec2InstanceId' variable for subsequent steps if needed
         }
+    }
+}
         
          
 

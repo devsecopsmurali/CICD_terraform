@@ -37,12 +37,16 @@ pipeline {
                 script {
                     def output = sh (script: 'terraform output -json', returnStdout: true).trim()
                     //def hostIPs = sh(script: 'echo $output | jq -r ".host_ips.value"', returnStdout: true).trim()
-                    def jsonOutput = readJSON text: output
-                    def hostIPs = jsonOutput.host_ips.value
-                    echo "Host IPs: $hostIPs"
+                   def hostIPs = output =~ /"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"/
+                    
+                    // Extract IPs from the match groups
+                    def ipsList = hostIPs.collect { it[1] }
+                    def hostIPsString = ipsList.join(',')
+                    
+                    echo "Host IPs: $hostIPsString"
                     
                     // Store IPs in a file or environment variable for later use by Ansible
-                    env.HOST_IPS = hostIPs
+                    env.HOST_IPS = hostIPsString
                 }
             }
         }

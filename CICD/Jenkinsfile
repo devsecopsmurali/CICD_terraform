@@ -37,7 +37,7 @@ pipeline {
                 script {
                     def output = sh (script: 'terraform output -json', returnStdout: true).trim()
                     JsonSlurper slurper = new JsonSlurper(output)
-                    def hostIPs = userJson.host_ips.value
+                    //def hostIPs = userJson.host_ips.value
                     sh 'echo "$hostIPs" >> inventory'
                     sh 'cat inventory'
                 }

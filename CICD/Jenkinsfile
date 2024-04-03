@@ -34,9 +34,19 @@ pipeline {
         } 
          stage('Terraform output') {
             steps {
-                sh "cd dev_module_2;terraform output -raw ec2_id_test"
-               
-            }
+            script {
+                def output = sh(
+                    script: 'cd dev_module_2;terraform output -raw ec2_id_test',
+                    captureOutput: true
+                )
+
+        // Extract the IP address (assuming it's on a single line)
+        def ipAddress = output.trim()
+
+        // Use the 'ipAddress' variable for subsequent steps
+        echo "The EC2 instance ID is: $ipAddress"
+    }
+}
         }
         
          

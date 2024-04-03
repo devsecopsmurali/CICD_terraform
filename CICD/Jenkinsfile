@@ -36,9 +36,13 @@ pipeline {
             steps {
                 script {
                     def output = sh (script: 'terraform output -json', returnStdout: true).trim()
-                    def hostIPs = sh(script: 'echo $output | jq -r ".host_ips.value"', returnStdout: true).trim()
-                    sh 'echo "$hostIPs" >> inventory'
-                    sh 'cat inventory'
+                    //def hostIPs = sh(script: 'echo $output | jq -r ".host_ips.value"', returnStdout: true).trim()
+                    def jsonOutput = readJSON text: output
+                    def hostIPs = jsonOutput.host_ips.value
+                    echo "Host IPs: $hostIPs"
+                    
+                    // Store IPs in a file or environment variable for later use by Ansible
+                    env.HOST_IPS = hostIPs
                 }
             }
         }

@@ -48,7 +48,7 @@ pipeline {
             echo "Error retrieving EC2 instance ID from Terraform output."
             // Optionally handle the error further (e.g., mark the stage as failed)
         }
-    }
+    }}
 }
             
 }

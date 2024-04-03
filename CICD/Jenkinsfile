@@ -45,29 +45,11 @@ pipeline {
                 ).trim()
             }
             echo "The EC2 instance ID is: ${ec2InstanceId}"
-            // Use the 'ec2InstanceId' variable for subsequent steps if needed
+            env.EC2_INSTANCE_ID = ec2InstanceId
         }
     }
 }
-        
-         
-
-
-        stage('Print Inventory') {
-      steps {
-        sh '''
-          echo $(terraform output -raw ec2_id_test) | awk -F'"' '{print $2}' > aws_hosts
-          cat aws_hosts
-        '''
-      }
-    }
-    stage('Wait EC2') {
-      steps {
-        sh '''
-          aws ec2 wait instance-status-ok --region us-east-1 --instance-ids `$(terraform output -json ec2_id_test) | awk -F'"' '{print $2}'`
-        '''
-      }
-    }
+    
 
     stage('Validate Ansible') {
       input {
@@ -81,7 +63,7 @@ pipeline {
 
     stage('Run Ansible') {
       steps {
-        ansiblePlaybook(inventory: '${aws_instance.web_servers.public_ip}', playbook: 'dev_module_2/config.yml')
+        ansiblePlaybook(inventory: '${env.EC2_INSTANCE_ID}', playbook: 'dev_module_2/config.yml')
       }
     }
 

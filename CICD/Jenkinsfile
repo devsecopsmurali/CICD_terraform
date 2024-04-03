@@ -44,7 +44,7 @@ pipeline {
                 ansiblePlaybook(
                         playbook: './dev_module_2/config.yml',
                         inventory: 'inventory'
-                        ) -vvv
+                        )
             }
         }
     }

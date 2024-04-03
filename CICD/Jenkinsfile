@@ -61,7 +61,7 @@ pipeline {
 
     stage('Run Ansible') {
       steps {
-        ansiblePlaybook(inventory: 'aws_hosts', playbook: 'dev_module_2/config.yml')
+        ansiblePlaybook(inventory: '${aws_instance.web_servers.public_ip}', playbook: 'dev_module_2/config.yml')
       }
     }
 

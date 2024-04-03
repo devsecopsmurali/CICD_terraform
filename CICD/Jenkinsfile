@@ -29,7 +29,7 @@ pipeline {
         }
         stage('Terraform apply') {
             steps {
-                sh "cd dev_module_2;terraform destroy --auto-approve"
+                sh "cd dev_module_2;terraform apply --auto-approve"
             }
         }
 

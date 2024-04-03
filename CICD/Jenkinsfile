@@ -34,25 +34,14 @@ pipeline {
         } 
          stage('Terraform output') {
             steps {
-    script {
-        catchError {
-            def ec2InstanceId = sh(
-                script: 'cd dev_module_2;terraform output -raw ec2_id_test',
-                captureOutput: true
-            ).trim()
-
-            echo "The EC2 instance ID is: ${ec2InstanceId}"
-
-            // Use the 'ec2InstanceId' variable for subsequent steps
-        } 
-            echo "Error retrieving EC2 instance ID from Terraform output."
-            // Optionally handle the error further (e.g., mark the stage as failed)
-        
-    }}
-}
-            
-}
-        
+                //sh "cd dev_module_2;terraform output -raw ec2_id_test"
+               def ec2InstanceId = sh(
+                    script: 'cd dev_module_2;terraform output -raw ec2_id_test',
+                    captureOutput: true).trim()
+                
+                echo "The EC2 instance ID is: ${ec2InstanceId}"
+            }
+        }
         
          
 

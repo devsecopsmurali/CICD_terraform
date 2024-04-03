@@ -9,8 +9,9 @@ resource "aws_instance" "web_servers" {
   instance_type = "t2.micro" 
 }
 output "ec2_id_test" {
-  value = [for instance in aws_instance.web_servers.id : instance.public_ip]
+  value = [for instance in aws_instance.web_servers : instance.public_ip]
 }
+#aws_instance.web_servers[count.index]
 
 # output "ec2_id_test" {
 #   value = "${aws_instance.web_servers.id}"

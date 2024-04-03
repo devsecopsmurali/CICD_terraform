@@ -32,24 +32,58 @@ pipeline {
                 sh "cd dev_module_2;terraform apply --auto-approve"
             }
         }
-        stage('Retrieve Host IPs') {
-            steps {
-                script {
-                    // Use Terraform output to retrieve host IPs
-                    def output = sh(script: 'terraform output -json', returnStdout: true).trim()
-                    def hostIPs = output =~ /"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"/
+
+        stage('Print Inventory') {
+      steps {
+        sh '''
+          echo $(terraform output -json ec2_public_ip) | awk -F'"' '{print $2}' > aws_hosts
+          cat aws_hosts
+        '''
+      }
+    }
+    stage('Wait EC2') {
+      steps {
+        sh '''
+          aws ec2 wait instance-status-ok --region ap-southeast-1 --instance-ids `$(terraform output -json ec2_id_test) | awk -F'"' '{print $2}'`
+        '''
+      }
+    }
+
+    stage('Validate Ansible') {
+      input {
+        message "Do you want to run Ansible Playbook?"
+        ok "Run Ansible"
+      }
+      steps {
+        echo "Ansible Accepted"
+      }
+    }
+
+    stage('Run Ansible') {
+      steps {
+        ansiblePlaybook(credentialsId: 'ec2.ssh.key	', inventory: 'aws_hosts', playbook: 'dev_module2/config.yml')
+      }
+    }
+
+
+        // stage('Retrieve Host IPs') {
+        //     steps {
+        //         script {
+        //             // Use Terraform output to retrieve host IPs
+        //             def output = sh(script: 'terraform output -json', returnStdout: true).trim()
+        //             def hostIPs = output =~ /"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"/
                     
-                    // Extract IPs from the match groups
-                    def ipsList = hostIPs.collect { it[1] }
-                    def hostIPsString = ipsList.join(',')
+        //             // Extract IPs from the match groups
+        //             def ipsList = hostIPs.collect { it[1] }
+        //             def hostIPsString = ipsList.join(',')
                     
-                    echo "Host IPs: $hostIPsString"
+        //             echo "Host IPs: $hostIPsString"
                     
-                    // Write host IPs to a file
-                    writeFile file: 'host_ips.txt', text: hostIPsString
-                }
-            }
-        }
+        //             // Write host IPs to a file
+        //             writeFile file: 'host_ips.txt', text: hostIPsString
+        //         }
+        //     }
+        // }
         stage('Ansible Configuration') {
             steps {
                 // Run Ansible playbooks to configure provisioned hosts

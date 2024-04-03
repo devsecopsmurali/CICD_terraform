@@ -41,7 +41,7 @@ pipeline {
                     sh 'ls -al'
                 }
                 ansiblePlaybook(
-                        playbook: './dev_module_2/config.ym',
+                        playbook: './dev_module_2/config.yml',
                         inventory: 'inventory'
                         )
             }

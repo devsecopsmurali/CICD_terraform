@@ -84,14 +84,14 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Ansible Configuration') {
-            steps {
-                // Run Ansible playbooks to configure provisioned hosts
-                script {
-                    sh "ansible-playbook config.yml --extra-vars '@host_ips.txt'"
-                }
-            }
-        }
+        // stage('Ansible Configuration') {
+        //     steps {
+        //         // Run Ansible playbooks to configure provisioned hosts
+        //         script {
+        //             sh "ansible-playbook config.yml --extra-vars '@host_ips.txt'"
+        //         }
+        //     }
+        // }
     }
 
     }

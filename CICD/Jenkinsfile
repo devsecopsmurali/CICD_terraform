@@ -54,7 +54,7 @@ pipeline {
             steps {
                 // Run Ansible playbooks to configure provisioned hosts
                 script {
-                    sh "ansible-playbook playbook.yml --extra-vars '@host_ips.txt'"
+                    sh "ansible-playbook config.yml --extra-vars '@host_ips.txt'"
                 }
             }
         }

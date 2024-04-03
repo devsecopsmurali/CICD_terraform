@@ -47,16 +47,12 @@ pipeline {
                     
                     // Store IPs in a file or environment variable for later use by Ansible
                     env.HOST_IPS = hostIPsString
+                    sh 'ansible-playbook config.yml --extra-vars "host_ips=${env.HOST_IPS}"'
                 }
             }
         }
 
-        stage('Ansible Configuration') {
-            steps {
-                // Run Ansible playbooks to configure provisioned hosts
-                sh 'ansible-playbook config.yml --extra-vars "host_ips=${env.HOST_IPS}"'
-            }
-        }
+        
 
         // stage('Configure VMs') {
         //     steps {

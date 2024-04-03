@@ -7,5 +7,5 @@ resource "aws_instance" "web_servers" {
   instance_type = "t2.micro" 
 }
 output "aws_instances" {
-  value = [for instance in aws_instance.this : instance.public_ip]
+  value = [for instance in aws_instance.web_servers : instance.public_ip]
 }

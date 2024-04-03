@@ -51,6 +51,13 @@ pipeline {
             }
         }
 
+        stage('Ansible Configuration') {
+            steps {
+                // Run Ansible playbooks to configure provisioned hosts
+                sh 'ansible-playbook config.yml --extra-vars "host_ips=${env.HOST_IPS}"'
+            }
+        }
+
         // stage('Configure VMs') {
         //     steps {
         //         script {

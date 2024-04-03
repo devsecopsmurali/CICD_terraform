@@ -44,10 +44,10 @@ pipeline {
             echo "The EC2 instance ID is: ${ec2InstanceId}"
 
             // Use the 'ec2InstanceId' variable for subsequent steps
-        } else {
+        } 
             echo "Error retrieving EC2 instance ID from Terraform output."
             // Optionally handle the error further (e.g., mark the stage as failed)
-        }
+        
     }}
 }
             

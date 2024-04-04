@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS')
+    } 
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'Githubcreds', branch: 'custom_modules', url: 'https://github.com/devsecopsmurali/CICD_terraform.git'
+            }
+        }
+         stage('Terraform init') {
+            steps {
+                sh 'cd dev_module_3;terraform init'
+            }
+        }
+       
+        stage('Terraform refresh') {
+            steps {
+                sh 'cd dev_module_3;terraform refresh'
+            }
+        }
+        stage('Terraform apply') {
+            steps {
+                sh "cd dev_module_3;terraform apply --auto-approve"
+            }
+        } 
+    }
+
+    }

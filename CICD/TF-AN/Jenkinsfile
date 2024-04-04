@@ -48,7 +48,8 @@ pipeline {
             steps {
                 script {
                     def inventoryFile = "${EC2_INSTANCE_ID}"
-                    sh "ansible-playbook dev_module_3/config.yml -i ${inventoryFile}"
+                    sh "ansible-playbook dev_module_3/config.yml -i ${inventoryFile},"
+
                 }
             }
         }

@@ -67,7 +67,7 @@ stage('Run Ansible Playbook') {
     steps {
         script {
             def inventoryFile = "${EC2_INSTANCE_ID}"
-            sh "ansible-playbook dev_module_2/config.yml -i ${inventoryFile}, -e 'host_ip=${inventoryFile}'"
+            sh "ansible-playbook dev_module_2/config.yml -i ${inventoryFile}"
         }
     }
 }

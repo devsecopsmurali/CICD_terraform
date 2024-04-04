@@ -4,7 +4,7 @@ module "ec2_instance" {
   name = "single-instance"
   ami           = "ami-0c101f26f147fa7fd"
   instance_type          = "t2.micro"
-  key_name               = "user1"
+  key_name               = "Batch1"
   monitoring             = true
   vpc_security_group_ids = ["sg-07743fd1cb146c2c8"]
   subnet_id              = "subnet-0c669e5faf1eee1a4"

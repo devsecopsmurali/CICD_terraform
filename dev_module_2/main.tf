@@ -8,12 +8,10 @@ resource "aws_instance" "web_servers" {
   subnet_id = aws_subnet.subnet.id
   ami           = "ami-0c101f26f147fa7fd"
   instance_type = "t2.micro" 
-  depends_on = [aws_internet_gateway.gw]
+  #depends_on = [aws_internet_gateway.gw]
 }
 
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.test_env.id
-}
+
 
 
 

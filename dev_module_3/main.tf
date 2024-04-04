@@ -14,3 +14,6 @@ module "ec2_instance" {
     Environment = "dev"
   }
 }
+provider "aws" {
+  region     = "us-east-1"
+}

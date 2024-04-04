@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: true  # Gain root privileges
+
+  tasks:
+    - name: Update package lists
+      apt: update_cache=yes
+
+    - name: Install Java
+      apt: name=openjdk-17-jdk state=present

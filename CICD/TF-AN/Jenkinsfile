@@ -48,7 +48,8 @@ pipeline {
             steps {
                 script {
                     def inventoryFile = "${EC2_INSTANCE_ID}"
-                    sh "ansible-playbook dev_module_3/config.yml -i ${inventoryFile},"
+                    ansiblePlaybook(credentialsId: 'ssh-ec2', inventory: '${inventoryFile}', playbook: 'dev_module_3/config.yml')
+                    #sh "ansible-playbook credentialsId: 'ssh-ec2' dev_module_3/config.yml -i ${inventoryFile},"
 
                 }
             }

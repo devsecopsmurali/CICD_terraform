@@ -49,7 +49,7 @@ pipeline {
                 script {
                     def inventoryFile = "${EC2_INSTANCE_ID}"
                     sh 'pwd; ls -ltr ; ls -ld inventoryFile ;id;whoami'
-                    ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: '/var/lib/jenkins/workspace/Intr-TF-An/inventoryFile', playbook: 'dev_module_2/config.yml',hostKeyChecking: 'false')
+                    ansiblePlaybook(credentialsId: 'ssh-jenkins', inventory: '/var/lib/jenkins/workspace/Intr-TF-An/inventoryFile', playbook: 'dev_module_2/config.yml',disableHostKeyChecking: 'True')
                     //ansiblePlaybook(credentialsId: 'ssh-ec2', playbook: 'dev_module_3/config.yml -i ${inventoryFile},')
                     //sh "ansible-playbook credentialsId: 'ssh-ec2' dev_module_3/config.yml -i ${inventoryFile},"
 
